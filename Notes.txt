@@ -1,0 +1,6 @@
+Tech Stack Used in Blog website
+
+: React js
+Styling :Tailwind css
+Components :flowbite react Library for ui Component
+Icons : React-icons
