@@ -4,3 +4,5 @@ Tech Stack Used in Blog website
 Styling :Tailwind css
 Components :flowbite react Library for ui Component
 Icons : React-icons
+database : mongoose 
+packages : express mongoose dotenv
