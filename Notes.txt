@@ -6,3 +6,6 @@ Components :flowbite react Library for ui Component
 Icons : React-icons
 database : mongoose 
 packages : express mongoose dotenv
+
+APi testing: insomnia api test
+to Secure password of user: bcryptjs 
