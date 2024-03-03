@@ -12,6 +12,9 @@ export default function SignIn() {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim()});
 
   };
+  
+    
+  
   const handleSubmit = async(e)=>{
     e.preventDefault();
     if(!formData.email || !formData.password){
@@ -27,16 +30,18 @@ export default function SignIn() {
       });
      const data = await res.json();
      if(data.success == false){
+      setLoading(false);
       return setErrorMessage(data.message);
+      
      }
-     setLoading(false)
+     setLoading(false);
      if(res.ok){
       navigate('/');
      }
 
     }catch(error){
-  setErrorMessage(error.message);
-  setLoading(false);
+     setErrorMessage(error.message);
+     setLoading(false);
     }
   }
   return (
