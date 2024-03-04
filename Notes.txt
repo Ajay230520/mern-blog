@@ -10,3 +10,4 @@ packages : express mongoose dotenv
 APi testing: insomnia api test
 to Secure password of user: bcryptjs 
 Authentication package: jsonwebtoken 
+State management tool : Redux Tool kit
