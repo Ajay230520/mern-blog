@@ -1,7 +1,17 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { userReducer } from './user/userSlice.js';
-import { persistReducer,persistStore } from 'redux-persist';
+// import { persistReducer,persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist'
 // import { getDefaultMiddleware } from '@reduxjs/toolkit'; // Correct import
 
 const rootReducer = combineReducers({
@@ -18,9 +28,12 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  // middleware: getDefaultMiddleware({
-  //   serializableCheck: false
-  // }) // Correct usage of getDefaultMiddleware
+  middleware: (getDefaultMiddleware) =>
+  getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
 });
 
 // Assuming you've imported persistStore from redux-persist elsewhere
