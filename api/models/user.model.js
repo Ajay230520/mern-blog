@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
         required:true
 
     },
-    profilepictur:{
+    profilepicture:{
           type:String,
           default:"https://tse3.mm.bing.net/th?id=OIP.m_E2GiWXc8IGEeYAbypLgAHaHa&pid=Api&P=0&h=180",
 
