@@ -62,7 +62,7 @@ export default function DashProfile() {
         setImageFileUploadError("Could not upload image more than 2MB .");
         setImageUploadProgress(null);
         setImageFile(null);
-        setImageFileUrl(null);
+        setImageFileUrl(null)
       },
 
       () => {
@@ -88,7 +88,7 @@ export default function DashProfile() {
           className="relative w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full"
           onClick={() => filePickerRef.current.click()}
         >
-          {imageFileUploadProgress && (
+          {imageFileUploadProgress &&  imageFileUploadProgress<100 &&(
             <CircularProgressbar
               value={imageFileUploadProgress || 0}
               text={` ${imageFileUploadProgress}%`}
