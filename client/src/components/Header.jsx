@@ -46,7 +46,7 @@ export default function Header() {
             label={
               <Avatar
               alt="user "
-              img ={currentUser.profilepictur}
+              img ={currentUser.profilepicture}
               rounded
               />
             }
