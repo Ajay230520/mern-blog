@@ -40,7 +40,7 @@ export const updateUser = async (req,res,next)=>{
                 $set:{
                     username:req.body.username,
                     email:req.body.email,
-                    profilePicture:req.body.profilePicture,
+                    profilepicture:req.body.profilepicture,
                     password :req.body.password,
                 },
 
