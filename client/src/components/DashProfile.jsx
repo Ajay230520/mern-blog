@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import {Link} from 'react-router-dom';
 import {
   Button,
   Modal,
@@ -25,10 +26,10 @@ import {
   deleteUserFailure,
   deleteUserStart,
   deleteUserSuccess,
-  signOutSuccess
+  signOutSuccess,
 } from "../redux/user/userSlice.js";
 export default function DashProfile() {
-  const { currentUser ,error } = useSelector((state) => state.user);
+  const { currentUser, error,loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadProgress, setImageUploadProgress] = useState(null);
@@ -141,36 +142,34 @@ export default function DashProfile() {
     setShowModel(false);
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/api/user/delete/${currentUser._id}`,{
-         method:'DELETE',
-
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
       });
       const data = await res.json();
-      if(!res.ok){
+      if (!res.ok) {
         dispatch(deleteUserFailure(data.message));
-      }else{
+      } else {
         dispatch(deleteUserSuccess(data));
       }
-
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
     }
   };
-  const handleSignOut = async ()=>{
+  const handleSignOut = async () => {
     try {
-      const res = await fetch('/api/user/signout',{
-        method:'POST',
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
       });
       const data = await res.json();
-      if(!res.ok){
+      if (!res.ok) {
         console.log(data.message);
-      }else{
-          dispatch(signOutSuccess());
+      } else {
+        dispatch(signOutSuccess());
       }
     } catch (error) {
       console.log(error.message);
     }
-  }
+  };
   return (
     <div className="w-full  mx-auto p-3 ">
       <h1 className="my-7 text-center text-3xl font-semibold">Profile</h1>
@@ -240,9 +239,16 @@ export default function DashProfile() {
             placeholder="password"
             onChange={handleChange}
           />
-          <Button type="submit" gradientDuoTone="purpleToBlue" outline>
-            Update
+          
+          <Button type="submit" gradientDuoTone="purpleToBlue" outline disabled={loading || imageFileUploading}>
+            {loading ? 'Loading...' :'Update'}
           </Button>
+          {currentUser.isAdmin && (
+            <Link to={'/create-post'}>
+          <Button type="button" gradientDuoTone="purpleToPink" className="w-full">Create a Post</Button>
+            </Link>
+          )
+          }
         </div>
       </form>
       <div className="text-red-500 mt-5 lg:w-1/2 flex flex-col justify-between lg:mx-auto gap-6  sm:px-10">
@@ -250,7 +256,9 @@ export default function DashProfile() {
           <span onClick={() => setShowModel(true)} className="cursor-pointer">
             Delete Account
           </span>
-          <span onClick={handleSignOut} className="cursor-pointer">Sign Out</span>
+          <span onClick={handleSignOut} className="cursor-pointer">
+            Sign Out
+          </span>
         </div>
         {updateUserSuccess && (
           <Alert color="success" className="">
@@ -285,7 +293,9 @@ export default function DashProfile() {
               <Button color="failure" onClick={handleDeleteUser}>
                 Yes, I'm sure
               </Button>
-              <Button onClick={()=>setShowModel(false)} color="gray">No,cancel</Button>
+              <Button onClick={() => setShowModel(false)} color="gray">
+                No,cancel
+              </Button>
             </div>
           </div>
         </Modal.Body>

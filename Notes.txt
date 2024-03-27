@@ -12,3 +12,7 @@ to Secure password of user: bcryptjs
 Authentication package: jsonwebtoken 
 State management tool : Redux Tool kit
 to store information when user refresh not gona remove.
+
+
+###React Quill #####
+package used in create post page provide text editing functinality.
