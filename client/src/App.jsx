@@ -9,7 +9,7 @@ import Projects from "./pages/Projects";
 import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute copy";
-import CreatePost from "./components/CreatePost";
+import CreatePost from "./pages/CreatePost";
 function App() {
   return (
     <BrowserRouter>
