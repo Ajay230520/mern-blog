@@ -5,8 +5,8 @@ import {BsFacebook,BsInstagram,BsTwitterX,BsLinkedin,BsGithub} from "react-icons
 
 export default function FooterCom() {
   return (
-    <Footer container className="border border-t-8 border-teal-500">
-      <div className=" w-full max-w-7xl mx-auto">
+    <Footer container className=" w-full border border-t-8 border-teal-500">
+      <div className="w-full max-w-7xl mx-auto">
         <div className="grid w-full justify-between sm:flex md:grid-col-1">
           <div className="mb-6">
             <Link
@@ -64,13 +64,14 @@ export default function FooterCom() {
           </div>
         </div>
         <Footer.Divider />
-        <div className="w-full sm:flex sm:items-center sm:justify-between">
+        <div className="w-full sm:flex sm:items-center sm:justify-between flex-wrap
+        ">
           <Footer.Copyright
             href="#"
             by="Ajay's blog"
             year={new Date().getFullYear()}
           />
-          <div className="flex gap-6 sm:mt-0  mt-4">
+          <div className="flex gap-6 mt-4 sm:mt-0 flex-wrap  ">
             <Footer.Icon href="https://github.com/Ajay230520" icon={BsGithub}/>
             <Footer.Icon href="https://www.linkedin.com/in/ajay-muniya-7b2b56251/" icon={BsLinkedin}/>
             <Footer.Icon href="#" icon={BsFacebook}/>
