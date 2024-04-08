@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Alert, Button, Textarea } from "flowbite-react";
+import Comment from "./Comment";
 
- function CommentSection({ postId }) {
+function CommentSection({ postId }) {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
-  const [commentError,setcommentError] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [commentError, setcommentError] = useState(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200) {
@@ -31,12 +33,29 @@ import { Alert, Button, Textarea } from "flowbite-react";
       if (res.ok) {
         setComment("");
         setcommentError(null);
+        setComments([data,...comments])
       }
     } catch (error) {
-
-      setcommentError(error.message)
+      setcommentError(error.message);
     }
   };
+
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const res = await fetch(`/api/comment/getPostComments/${postId}`);
+
+        if (res.ok) {
+          const data = await res.json();
+          setComments(data);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    getComments();
+  }, [postId]);
   return (
     <div className="max-w-2xl mx-auto w-full p-3">
       {currentUser ? (
@@ -89,13 +108,28 @@ import { Alert, Button, Textarea } from "flowbite-react";
               Submit{" "}
             </Button>
           </div>
-          { commentError && ( <Alert color={'failure'}>{commentError}</Alert>)}
+          {commentError && <Alert color={"failure"}>{commentError}</Alert>}
         </form>
-        
+      )}
+      {comments.length === 0 ? (
+        <p clasName="text-sm my-5">No comments yet!</p>
+      ) : (
+        <>
+          <div className=" text-sm my-5 flex items-center gap-2">
+            <p className="">Comments</p>
+            <div className="border border-gray-400 py-1 px-2 rounded-sm">
+              <p>{comments.length}</p>
+            </div>
+          </div>
+          {
+            comments.map( (comment) =>(
+              <Comment key={comment._id} comment={comment} />
+            ))
+          }
+        </>
       )}
     </div>
   );
 }
-
 
 export default CommentSection;
