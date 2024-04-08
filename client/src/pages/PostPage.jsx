@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { Button, Spinner } from "flowbite-react";
-import CallToAction from "../components/CallToAction";
-import {CommentSection} from "../components/CommentSection";
+import CallToAction from "../components/CallToAction.jsx";
+import CommentSection from "../components/CommentSection.jsx";
 export default function PostPage() {
   const { postSlug } = useParams();
   const [loading, setLoading] = useState(false);
