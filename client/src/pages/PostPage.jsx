@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
+import PostCard from "../components/PostCard.jsx";
 import { Button, Spinner } from "flowbite-react";
 import CallToAction from "../components/CallToAction.jsx";
 import CommentSection from "../components/CommentSection.jsx";
@@ -9,7 +9,8 @@ export default function PostPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [post, setPost] = useState(null);
-  console.log(post);
+  // recent post  hook
+  const [recentPosts, setRecentPosts] = useState(null);
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -34,6 +35,22 @@ export default function PostPage() {
     };
     fetchPost();
   }, [postSlug]);
+
+  useEffect(() => {
+    try {
+      const fetchRecentPosts = async () => {
+        const res = await fetch(`/api/post/getposts?limit=3`);
+        const data = await res.json();
+
+        if (res.ok) {
+          setRecentPosts(data.posts);
+        }
+      };
+      fetchRecentPosts();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, []);
 
   if (loading)
     return (
@@ -70,10 +87,25 @@ export default function PostPage() {
       <div
         className="p-3 max-w-2xl mx-auto w-full post-content"
         dangerouslySetInnerHTML={{ __html: post && post.content }}></div>
-        <div className="max-w-4xl mx-auto w-full">
-            <CallToAction/>
+      <div className="max-w-4xl mx-auto w-full">
+        <CallToAction />
+      </div>
+      <CommentSection postId={post && post._id} />
+
+      <div className=" flex flex-col justify-center items-center mb-5">
+        <h1 className="text-xl mb-5">Reacent articles</h1>
+        <div className=" flex flex-wrap gap-5 mt-5 justify-center  ">
+          {recentPosts &&
+            recentPosts.map((post) => (
+
+              <PostCard
+                key={post._id}
+                post={post}
+              />
+            )
+            )}
         </div>
-        <CommentSection postId={post &&  post._id}/>
+      </div>
     </main>
   );
 }
