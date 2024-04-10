@@ -5,6 +5,7 @@ import DashProfile from '../components/DashProfile';
 import DashPosts from '../components/DashPosts';
 import DashUsers from '../components/DashUsers';
 import DashComments from '../components/DashComments';
+import DashBoardComponent from '../components/DashBoardComponent';
 export default function Dashboard() {
   const location = useLocation();
   const [tab,setTab] = useState('');
@@ -25,6 +26,9 @@ export default function Dashboard() {
       <DashSidebar/>
     </div>
     {/* Profile */}
+    {
+      tab === 'dash' && <DashBoardComponent/>
+    }
       
       {
         tab === 'profile' && <DashProfile/>
