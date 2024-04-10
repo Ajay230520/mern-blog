@@ -11,27 +11,50 @@ import PrivateRoute from "./components/PrivateRoute";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute copy";
 import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/UpdatePost";
-import PostPage from './pages/PostPage.jsx'
+import PostPage from "./pages/PostPage.jsx";
 import { ScrollToTop } from "./components/ScrollToTop.jsx";
+import Search from "./pages/Search.jsx";
 function App() {
   return (
     <BrowserRouter>
-    <ScrollToTop/>
+      <ScrollToTop />
       <Header />
       <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/signin" element={<SignIn />}></Route>
-        <Route path="/signup" element={<SignUp />}></Route>
+        <Route
+          path="/"
+          element={<Home />}></Route>
+        <Route
+          path="/about"
+          element={<About />}></Route>
+        <Route
+          path="/signin"
+          element={<SignIn />}></Route>
+        <Route
+          path="/signup"
+          element={<SignUp />}></Route>
+        <Route
+          path="/search"
+          element={<Search />}></Route>
         <Route element={<PrivateRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+            path="/dashboard"
+            element={<Dashboard />}
+          />
         </Route>
         <Route element={<OnlyAdminPrivateRoute />}>
-          <Route path="/create-post" element={<CreatePost/>}></Route>
-          <Route path="/update-post/:postId" element={<UpdatePost/>}></Route>
+          <Route
+            path="/create-post"
+            element={<CreatePost />}></Route>
+          <Route
+            path="/update-post/:postId"
+            element={<UpdatePost />}></Route>
         </Route>
-        <Route path="/projects" element={<Projects />}></Route>
-        <Route path="/post/:postSlug" element={<PostPage />}></Route>
+        <Route
+          path="/projects"
+          element={<Projects />}></Route>
+        <Route
+          path="/post/:postSlug"
+          element={<PostPage />}></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
