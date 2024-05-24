@@ -6,7 +6,7 @@ export default defineConfig({
    server: {
       proxy: {
         '/api' :{
-          target: 'https://mern-blog-dgue.onrender.com',
+          target: 'https://mern-blog-dgue.onrender.com/',
           secure: false,
         },
       },
