@@ -15,7 +15,7 @@ export default function PostPage() {
     const fetchPost = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`https://mern-blog-dgue.onrender.com/api/post/getposts?slug=${postSlug}`);
+        const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
         const data = await res.json();
 
         if (!res.ok) {
@@ -51,7 +51,7 @@ export default function PostPage() {
       console.log(error.message);
     }
   }, []);
-
+  console.log(post);
   if (loading)
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -106,6 +106,7 @@ export default function PostPage() {
             )}
         </div>
       </div>
+      {error && <p>Error occurred while fetching the post.</p>}
     </main>
   );
 }

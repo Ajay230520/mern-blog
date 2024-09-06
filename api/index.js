@@ -7,6 +7,7 @@ import postRoutes from './routes/post.route.js';
 import commentRoute from './routes/comment.route.js';
 import cookieParser from "cookie-parser";
 import path from 'path';
+import cors from 'cors';
 dotenv.config();
 
  
@@ -24,6 +25,10 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+  origin: 'http://localhost:5173', // Allow requests from this origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow methods
+}));
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000!!!");
