@@ -9,7 +9,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: viteApiUrl ? viteApiUrl :'http://localhost:3000', // use http for local development
+        target: viteApiUrl , // use http for local development
         changeOrigin: true,
         secure: false,
       },
