@@ -31,7 +31,8 @@ export const getPostComments = async (req, res, next) => {
 
     res.status(200).json(comments);
   } catch (error) {
-    next(error.message);
+    // FIX: Pass error object directly to next() instead of error.message string
+    next(error);
   }
 };
 

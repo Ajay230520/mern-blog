@@ -6,8 +6,10 @@ export const test = (req, res) => {
 };
 
 export const updateUser = async (req, res, next) => {
-  if (req.user.id != req.params.userId) {
-    return next(errorHandler(403, "YOu are not allowed to update this user"));
+  // FIX: Check for admin first - admins can update any user
+  // Also use strict equality !== instead of !=
+  if (!req.user.isAdmin && req.user.id !== req.params.userId) {
+    return next(errorHandler(403, "You are not allowed to update this user"));
   }
   if (req.body.password) {
     if (req.body.password.length < 6) {
@@ -52,7 +54,7 @@ export const updateUser = async (req, res, next) => {
 };
 
 export const deleteUser = async (req, res, next) => {
-  if ( !req.user.isAdmin && req.user.id !== req.params.userId) {
+  if (!req.user.isAdmin && req.user.id !== req.params.userId) {
     return next(errorHandler(403, "You are not Allowed to delete this user"));
   }
   try {
@@ -117,16 +119,17 @@ export const getUsers = async (req, res, next) => {
 };
 
 
-export const getUser = async (req,res,next) =>{
-
+export const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.userId);
-    const {password , ...rest} = user._doc;
-    res.status(200).json(user);
-   if(!user){
-       next(errorHandler(404,'User not found'));
-  }
+    // FIX: Check for user existence BEFORE sending response
+    if (!user) {
+      return next(errorHandler(404, 'User not found'));
+    }
+    // FIX: Properly destructure _doc to exclude password and send sanitized response
+    const { password, ...rest } = user._doc;
+    res.status(200).json(rest);
   } catch (error) {
-     next(error)
+    next(error)
   }
 }

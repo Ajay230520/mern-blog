@@ -64,12 +64,17 @@ export const getPosts = async (req, res, next) => {
       lastMonthPosts,
     });
   } catch (error) {
-    next(errorHandler(403, error));
+    // FIX: Pass error directly to next() instead of wrapping in errorHandler
+    // errorHandler is meant for creating custom errors, not wrapping existing ones
+    next(error);
   }
 };
 
 export const deletePost = async (req, res, next) => {
-  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+  // FIX: Changed OR to AND - admins should be able to delete any post
+  // Previous: (!req.user.isAdmin || req.user.id !== req.params.userId) - blocked admins
+  // Now: (!req.user.isAdmin && req.user.id !== req.params.userId) - allows admins
+  if (!req.user.isAdmin && req.user.id !== req.params.userId) {
     return next(errorHandler(403, " You are not allowed to delete this post"));
   }
   try {
@@ -81,7 +86,10 @@ export const deletePost = async (req, res, next) => {
 };
 
 export const updatepost = async (req, res, next) => {
-  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+  // FIX: Changed OR to AND - admins should be able to update any post
+  // Previous: (!req.user.isAdmin || req.user.id !== req.params.userId) - blocked admins
+  // Now: (!req.user.isAdmin && req.user.id !== req.params.userId) - allows admins
+  if (!req.user.isAdmin && req.user.id !== req.params.userId) {
     return next(errorHandler(403, "You are not allowed to update this post"));
   }
 

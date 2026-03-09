@@ -14,7 +14,13 @@ export const signup = async (req, res, next) => {
     email === "" ||
     password === ""
   ) {
-    next(errorHandler(400, "All Fields Are required!"));
+    return next(errorHandler(400, "All Fields Are required!"));
+  }
+
+  // FIX: Check if user already exists before creating new user
+  const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+  if (existingUser) {
+    return next(errorHandler(400, "User with this email or username already exists"));
   }
 
   const hashedPassword = bcryptjs.hashSync(password, 10);
@@ -74,6 +80,7 @@ export const google = async (req, res, next) => {
         { id: user._id, isAdmin: user.isAdmin },
         process.env.JWT_SECRET
       );
+      // FIX: Properly destructure _doc to exclude password
       const { password, ...rest } = user._doc;
       res
         .status(200)
@@ -82,9 +89,11 @@ export const google = async (req, res, next) => {
         })
         .json(rest);
     } else {
+      // FIX: Generate proper random password - slice(-0) was returning full string
+      // Now generates 8-character random suffix for Google OAuth users
       const generatedPassword =
-        Math.random().toString(36).slice(-0) +
-        Math.random().toString(36).slice(-0);
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
       const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
       const newUser = new User({
         username:
@@ -95,8 +104,9 @@ export const google = async (req, res, next) => {
         profilepicture: googlePhotoUrl,
       });
       await newUser.save();
-      const token = jwt.sign({ id: newUser._id ,isAdmin: newUser.isAdmin }, process.env.JWT_SECRET);
-      const { passwordm, ...rest } = newUser._dec;
+      const token = jwt.sign({ id: newUser._id, isAdmin: newUser.isAdmin }, process.env.JWT_SECRET);
+      // FIX: Corrected typo _dec → _doc and properly exclude password
+      const { password: pass, ...rest } = newUser._doc;
       res
         .status(200)
         .cookie("access_token", token, {
@@ -104,5 +114,8 @@ export const google = async (req, res, next) => {
         })
         .json(rest);
     }
-  } catch (error) {}
+    // FIX: Added proper error handling instead of empty catch block
+  } catch (error) {
+    next(error);
+  }
 };

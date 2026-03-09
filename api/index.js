@@ -10,14 +10,23 @@ import path from "path";
 import cors from "cors";
 dotenv.config();
 
-const URL = process.env.MONGO_URL;
+// FIX: Support both MONGO_URL (used in code) and MONGODB_URI (documented in README)
+// Use MONGO_URL if available, fallback to MONGODB_URI for backward compatibility
+const URL = process.env.MONGO_URL || process.env.MONGODB_URI;
+
+if (!URL) {
+  console.error("Error: MongoDB connection URL not found in environment variables.");
+  console.error("Please set MONGO_URL or MONGODB_URI in your .env file.");
+  process.exit(1);
+}
+
 mongoose
   .connect(URL)
   .then(() => {
     console.log("mongo db is connected!!");
   })
   .catch((err) => {
-    console.log(err);
+    console.error("MongoDB connection error:", err);
   });
 
 const __dirname = path.resolve();
